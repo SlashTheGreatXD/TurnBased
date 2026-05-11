@@ -1,24 +1,19 @@
+love.graphics.setDefaultFilter("nearest","nearest")
+gameField = love.graphics.newCanvas(640,480)
 require("player")
 require("tile")
 require("game")
 require("enemy")
+require("render")
 
 
-game = {}
-game.entities = {}
+game = gameInit()
 game.player = playerInit()
 game.enemy = baseEnemyInit()
-game.tiles = tilesInit()
-game.tileset = love.graphics.newImage('ascii.png')
-local i = 0
-while i < 36 do
-  love.graphics.newQuad(i * 8,0,8,16,game.tileset)
-  i = i + 1
-end
 
 game.map = {
-  grid = baseMap(16,8),
-  width = 16,
+  grid = baseMap(32,8),
+  width = 32,
   height = 8,
 }
 game.delay = 0
@@ -40,7 +35,12 @@ function love.update(dt)
   end
 end
 
+
+
 function love.draw()
+  love.graphics.setCanvas(gameField)
+  local image = game.tileset.image
+  local quads = game.tileset.quads
   love.graphics.setColor(0.5, 0.5, 0.5)
   love.graphics.rectangle("fill",0,0,8 * game.map.width,16 * game.map.height)
   local j = 0
@@ -56,10 +56,15 @@ function love.draw()
   end
   local player = game.player
   love.graphics.setColor(0,1,0)
-  love.graphics.rectangle("fill", player.x * 8, player.y * 16, 8, 16)
+  --love.graphics.rectangle("fill", player.x * 8, player.y * 16, 8, 16)
+  love.graphics.setColor(0,1,0)
+  love.graphics.draw(image,quads[3],player.x * 8, player.y * 16)
 
   local enemy = game.enemy
   love.graphics.setColor(0,1,0)
   love.graphics.rectangle("fill", enemy.x * 8, enemy.y * 16, 8, 16)
   love.graphics.print(table.getn(game.moveQueue))
+  love.graphics.setCanvas()
+  love.graphics.setColor(1,1,1)
+  love.graphics.draw(gameField,0,0,0,2)
 end

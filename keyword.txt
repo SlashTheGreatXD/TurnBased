@@ -1,0 +1,23 @@
+while
+if
+else
+{
+}
+[
+]
+0b
+(
+)
+int
+char
+=
+==
+<=
+>=
+!=
+and
+or
+
+mov $####, a
+suba $####
+jez $####
